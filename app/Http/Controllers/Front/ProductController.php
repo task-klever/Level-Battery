@@ -5,172 +5,21 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use DB;
-use App\Services\ElasticsearchService;
 
 class ProductController extends Controller
 {
-    protected $elasticsearchService;
-
-    public function __construct(ElasticsearchService $elasticsearchService)
-    {
-        $this->elasticsearchService = $elasticsearchService;
-    }
-
     public function index(Request $request)
     {
         $g_setting = DB::table('general_settings')->where('id', 1)->first();
         $shop = DB::table('page_shop_items')->where('id', 1)->first();
-        $products = null;  // Initialize the variable
-
-        // Handle search queries
-        $query = $request->input('q');
-
-        // Initialize filter variables
-        $brand = $request->input('brand');
-        $pattern = $request->input('pattern');
-        $oem = $request->input('oem');
-        $width = $request->input('width');
-        $height = $request->input('height');
-        $rim = $request->input('rim');
-        $runflat = $request->input('runflat');
-        $load_speed = $request->input('load_speed');
-        $origin = $request->input('origin');
-        $year = $request->input('year');
-        
-        // Define filter arrays based on the search query
-        $filters = []; // Initialize filters array
-
-        if ($brand) {
-            $filters['brand_id'] = $brand; // Add brands to filters if brand is set
-        }
-        if ($pattern) {
-            $filters['pattern_id'] = $pattern; // Add patterns to filters if pattern is set
-        }
-        if ($oem) {
-            $filters['oem_id'] = $oem; // Add OEMs to filters if OEM is set
-        }
-        if ($width) {
-            $filters['width'] = $width; // Add width to filters if width is set
-        }
-        if ($height) {
-            $filters['height'] = $height; // Add height to filters if height is set
-        }
-        if ($rim) {
-            $filters['rim'] = $rim; // Add rim to filters if rim is set
-        }
-        if ($runflat) {
-            $filters['runflat'] = $runflat; // Add runflat to filters if runflat is set
-        }
-        if ($load_speed) {
-            $filters['load_speed'] = $load_speed; // Add load speed to filters if load speed is set
-        }
-        if ($origin) {
-            $filters['origin_id'] = $origin; // Add origins to filters if origin is set
-        }
-        if ($year) {
-            $filters['year'] = $year; // Add year to filters if year is set
-        }
-
-        if (isset($query) || !empty($filters)) {
-            // Search products in Elasticsearch
-            $searchResults = $this->elasticsearchService->searchProducts($query, $filters);
-            
-            if($searchResults && isset($searchResults['hits']['hits'])){
-                // Extract IDs from Elasticsearch hits
-                $productIds = collect($searchResults['hits']['hits'])->pluck('_id');
-                
-                if ($productIds->isNotEmpty()) {
-                    // Fetch product details from the database
-                    $products = DB::table('products')
-                        ->whereIn('id', $productIds)
-                        ->orderBy('product_order', 'asc')
-                        ->paginate(12);
-                }
-            }
-
-            if(!$products) {
-                // Search products in Database if no result from Elasticsearch
-                $products = $this->searchProducts($query, $filters);
-            }
-        } 
-        
-        if(!$products) {
-            // Default case: Fetch products from the database
-            $products = DB::table('products')
-                ->orderBy('product_order', 'asc')
-                ->where('product_status', 'Show')
-                ->paginate(12);
-        }
-
-        // Define filter arrays
-        $brands = [
-            ['id' => 1, 'name' => 'Michelin'],
-            ['id' => 2, 'name' => 'Bridgestone'],
-            ['id' => 3, 'name' => 'Goodyear'],
-            ['id' => 4, 'name' => 'Continental'],
-            ['id' => 5, 'name' => 'Pirelli']
-        ];
-
-        $patterns = [
-            ['id' => 1, 'name' => 'All Season'],
-            ['id' => 2, 'name' => 'Summer'],
-            ['id' => 3, 'name' => 'Winter'],
-            ['id' => 4, 'name' => 'All Terrain'],
-            ['id' => 5, 'name' => 'Mud Terrain']
-        ];
-
-        $oems = [
-            ['id' => 1, 'name' => 'BMW'],
-            ['id' => 2, 'name' => 'Mercedes'],
-            ['id' => 3, 'name' => 'Audi'],
-            ['id' => 4, 'name' => 'Volkswagen'],
-            ['id' => 5, 'name' => 'Toyota']
-        ];
-
-        $origins = [
-            ['id' => 1, 'name' => 'Germany'],
-            ['id' => 2, 'name' => 'Japan'],
-            ['id' => 3, 'name' => 'USA'],
-            ['id' => 4, 'name' => 'Italy'],
-            ['id' => 5, 'name' => 'France']
-        ];
-        
-        return view('pages.shop', compact('shop', 'g_setting', 'products', 'query', 'brands', 'patterns', 'oems', 'origins'));
-    }
-
-    private function searchProducts($query = null, $filters = [])
-    {
-        // Start building the query
-        $productQuery = DB::table('products')
+      
+        // Default case: Fetch products from the database
+        $products = DB::table('products')
             ->orderBy('product_order', 'asc')
-            ->where('product_status', 'Show');
-
-        // Add search query conditions if provided
-        if ($query) {
-            $productQuery->where(function($q) use ($query) {
-                $q->where('product_name', 'like', '%' . $query . '%')
-                  ->orWhere('product_content_short', 'like', '%' . $query . '%')
-                  ->orWhere('product_content', 'like', '%' . $query . '%')
-                  ->orWhere('seo_title', 'like', '%' . $query . '%')
-                  ->orWhere('seo_meta_description', 'like', '%' . $query . '%');
-            });
-        }
-
-        // Add filters to the query
-        if (!empty($filters)) {
-            foreach ($filters as $key => $value) {
-                if (is_array($value)) {
-                    $productQuery->whereIn($key, $value); // For array filters
-                } else {
-                    $productQuery->where($key, $value); // For single value filters
-                }
-            }
-        }
-
-        // Execute the query and paginate results
-        $products = $productQuery->paginate(12);
-
-        return $products;
+            ->where('product_status', 'Show')
+            ->paginate(12);
+        
+        return view('pages.shop', compact('shop', 'g_setting', 'products'));
     }
 
     public function detail($slug)
