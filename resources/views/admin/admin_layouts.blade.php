@@ -254,16 +254,24 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item" href="{{ route('admin.page_home.edit') }}">Home</a>
                     <a class="collapse-item" href="{{ route('admin.page_about.edit') }}">About</a>
+                    <?php /* ?>
                     <a class="collapse-item" href="{{ route('admin.page_service.edit') }}">Service</a>
+                    <?php */ ?>
                     <a class="collapse-item" href="{{ route('admin.page_shop.edit') }}">Shop</a>
                     <a class="collapse-item" href="{{ route('admin.page_blog.edit') }}">Blog</a>
+                    <?php /* ?>
                     <a class="collapse-item" href="{{ route('admin.page_project.edit') }}">Project</a>
+                    <?php */ ?>
                     <a class="collapse-item" href="{{ route('admin.page_faq.edit') }}">FAQ</a>
+                    <?php /* ?>
                     <a class="collapse-item" href="{{ route('admin.page_team.edit') }}">Team Member</a>
+                    <?php */ ?>
                     <a class="collapse-item" href="{{ route('admin.page_photo_gallery.edit') }}">Photo Gallery</a>
                     <a class="collapse-item" href="{{ route('admin.page_video_gallery.edit') }}">Video Gallery</a>
                     <a class="collapse-item" href="{{ route('admin.page_contact.edit') }}">Contact</a>
+                    <?php /* ?>
                     <a class="collapse-item" href="{{ route('admin.page_career.edit') }}">Career</a>
+                    <?php */ ?>
                     <a class="collapse-item" href="{{ route('admin.page_term.edit') }}">Term</a>
                     <a class="collapse-item" href="{{ route('admin.page_privacy.edit') }}">Privacy</a>
                     <a class="collapse-item" href="{{ route('admin.page_other.edit') }}">Other</a>
@@ -374,6 +382,7 @@
         </li>
         @endif
 
+        <?php /* ?>
         <!-- Project -->
         @php if( in_array('Project', $arr_one) || $logged_user_role_id==1 ): @endphp
         <li class="nav-item {{ Request::is('admin/project/*') ? 'active' : '' }}">
@@ -383,6 +392,7 @@
             </a>
         </li>
         @endif
+        
 
         <!-- Career Section -->
         @php if( in_array('Career Section', $arr_one) || $logged_user_role_id==1 ): @endphp
@@ -399,7 +409,7 @@
             </div>
         </li>
         @endif
-
+        <?php */ ?>
 
         <!-- Photo Gallery -->
         @php if( in_array('Photo Gallery', $arr_one) || $logged_user_role_id==1 ): @endphp
@@ -468,7 +478,8 @@
             </a>
         </li>
         @endif
-
+        
+        <?php /* ?>
         <!-- Services -->
         @php if( in_array('Service', $arr_one) || $logged_user_role_id==1 ): @endphp
         <li class="nav-item {{ Request::is('admin/service/*') ? 'active' : '' }}">
@@ -478,7 +489,7 @@
             </a>
         </li>
         @endif
-
+        
         <!-- Testimonials -->
         @php if( in_array('Testimonial', $arr_one) || $logged_user_role_id==1 ): @endphp
         <li class="nav-item {{ Request::is('admin/testimonial/*') ? 'active' : '' }}">
@@ -488,7 +499,8 @@
             </a>
         </li>
         @endif
-
+        <?php */ ?>
+        
         <!-- Team Members -->
         @php if( in_array('Team Member', $arr_one) || $logged_user_role_id==1 ): @endphp
         <li class="nav-item {{ Request::is('admin/team-member/*') ? 'active' : '' }}">
