@@ -8,17 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use DB;
-use App\Services\ElasticsearchService;
 
 class ProductController extends Controller
 {
-    protected $elasticsearchService;
-
-    public function __construct(ElasticsearchService $elasticsearchService)
-    {
-        $this->elasticsearchService = $elasticsearchService;
-    }
-
     public function index()
     {
         $product = Product::all();
@@ -42,8 +34,6 @@ class ProductController extends Controller
         $request->validate([
             'product_name' => 'required',
             'product_slug' => 'unique:products',
-            'product_current_price' => 'required',
-            'product_stock' => 'required',
             'product_content' => 'required',
             'product_content_short' => 'required',
             'product_featured_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
@@ -63,10 +53,7 @@ class ProductController extends Controller
 
         $product->fill($data)->save();
 
-        // Index the product in Elasticsearch after saving
-        $this->elasticsearchService->indexProduct($product);
-
-        return redirect()->route('admin.product.index')->with('success', 'Product is added successfully and indexed in Elasticsearch!');
+        return redirect()->route('admin.product.index')->with('success', 'Product is added successfully!');
     }
 
     public function edit($id)
@@ -90,8 +77,6 @@ class ProductController extends Controller
                 'product_slug'   =>  [
                     Rule::unique('products')->ignore($id),
                 ],
-                'product_current_price' => 'required',
-                'product_stock' => 'required',
                 'product_content' => 'required',
                 'product_content_short' => 'required',
                 'product_featured_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
@@ -107,8 +92,6 @@ class ProductController extends Controller
                 'product_slug'   =>  [
                     Rule::unique('products')->ignore($id),
                 ],
-                'product_current_price' => 'required',
-                'product_stock' => 'required',
                 'product_content' => 'required',
                 'product_content_short' => 'required',
             ]);
@@ -123,10 +106,7 @@ class ProductController extends Controller
 
         $product->fill($data)->save();
 
-        // Index the product in Elasticsearch after saving
-        $this->elasticsearchService->indexProduct($product);
-
-        return redirect()->route('admin.product.index')->with('success', 'Product is updated successfully and re-indexed in Elasticsearch!');
+        return redirect()->route('admin.product.index')->with('success', 'Product is updated successfully!');
     }
 
     public function destroy($id)
@@ -137,98 +117,8 @@ class ProductController extends Controller
         
         $product = Product::findOrFail($id);
 
-        // Remove the product from Elasticsearch before deleting it
-        $this->elasticsearchService->removeProductFromElasticsearch($product->id);
-
         unlink(public_path('uploads/'.$product->product_featured_photo));
         $product->delete();
-        return Redirect()->back()->with('success', 'Product is deleted successfully and removed from Elasticsearch!');
-    }
-
-    public function indexProductInElasticsearch($productId)
-    {
-        $product = Product::find($productId); // Fetch the product by ID
-        
-        if (!$product) {
-            return redirect()->back()->withErrors(['Product not found']);
-        }
-
-        // Index the product in Elasticsearch
-        $this->elasticsearchService->indexProduct($product);
-
-        return redirect()->route('admin.product.index', $productId)
-            ->with('success', 'Product indexed successfully in Elasticsearch.');
-    }
-
-    public function syncProductsWithElasticsearch()
-    {
-        // Fetch all products from the database
-        $products = Product::all();
-
-        // Get all product IDs from Elasticsearch (you will need to adjust this query based on your index structure)
-        $existingProductIds = $this->elasticsearchService->getAllIndexedProductIds();
-
-        // Index or reindex products that exist in the database
-        foreach ($products as $product) {
-            $this->elasticsearchService->indexProduct($product);
-        }
-
-        // Remove products from Elasticsearch that no longer exist in the database
-        foreach ($existingProductIds as $productId) {
-            if (!$products->contains('id', $productId)) {
-                $this->elasticsearchService->removeProductFromElasticsearch($productId);
-            }
-        }
-
-        return redirect()->route('admin.product.index')->with('success', 'Products synchronized with Elasticsearch!');
-    }
-
-    public function showImportForm()
-    {
-        return view('admin.product.import');
-    }
-
-    public function import(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:csv,txt',
-        ]);
-
-        $file = $request->file('file');
-        $path = $file->getRealPath();
-        $data = array_map('str_getcsv', file($path));
-
-        // Assuming the first row contains the headers
-        $header = array_shift($data);
-
-        foreach ($data as $row) {
-            $productData = array_combine($header, $row);
-            
-            // Create or update the product in the database
-            $newProduct = Product::updateOrCreate(
-                ['id' => $productData['id']], // Assuming you have an ID column for updates
-                [
-                    'product_name' => $productData['product_name'],
-                    'product_slug' => Str::slug($productData['product_name']),
-                    'product_current_price' => $productData['product_current_price'],
-                    'product_old_price' => $productData['product_old_price'],
-                    'product_stock' => 10,
-                    'product_status' => 'Show', // Default status
-                    'width' => $productData['width'], 'height' => $productData['height'], 
-                    'rim' => $productData['rim'], 'runflat' => $productData['runflat'], 
-                    'load_speed' => $productData['load_speed'], 
-                    'year' => $productData['year'],
-                    'brand_id' => $productData['brand_id'], 
-                    'pattern_id' => $productData['pattern_id'], 
-                    'oem_id' => $productData['oem_id'], 
-                    'origin_id' => $productData['origin_id']
-                ]
-            );
-
-            // Index the product in Elasticsearch after saving
-            $this->elasticsearchService->indexProduct($newProduct);
-        }
-
-        return redirect()->route('admin.product.index')->with('success', 'Products imported successfully!');
+        return Redirect()->back()->with('success', 'Product is deleted successfully!');
     }
 }

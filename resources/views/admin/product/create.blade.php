@@ -21,18 +21,6 @@
                     <input type="text" name="product_slug" class="form-control" value="{{ old('product_slug') }}">
                 </div>
                 <div class="form-group">
-                    <label for="">Old Price</label>
-                    <input type="text" name="product_old_price" class="form-control" value="{{ old('product_old_price') }}">
-                </div>
-                <div class="form-group">
-                    <label for="">Current Price *</label>
-                    <input type="text" name="product_current_price" class="form-control" value="{{ old('product_current_price') }}">
-                </div>
-                <div class="form-group">
-                    <label for="">Stock *</label>
-                    <input type="text" name="product_stock" class="form-control" value="{{ old('product_stock') }}">
-                </div>
-                <div class="form-group">
                     <label for="">Content *</label>
                     <textarea name="product_content" class="form-control editor" cols="30" rows="10">{{ old('product_content') }}</textarea>
                 </div>
@@ -41,11 +29,7 @@
                     <textarea name="product_content_short" class="form-control h_100" cols="30" rows="10">{{ old('product_content_short') }}</textarea>
                 </div>
                 <div class="form-group">
-                    <label for="">Return Policy</label>
-                    <textarea name="product_return_policy" class="form-control editor" cols="30" rows="10">{{ old('product_return_policy') }}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="">Featured Photo *</label>
+                    <label for="">Photo *</label>
                     <div>
                         <input type="file" name="product_featured_photo">
                     </div>

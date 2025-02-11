@@ -17,108 +17,8 @@
     <div class="page-content pt_60">
         <div class="container">
             <div class="row">
-                <!-- Sidebar with Filters -->
-                <div class="col-md-3">
-                    <div class="shop-sidebar">
-                        <form action="{{ url('/shop') }}" method="GET">
-                            <div class="sidebar-widget mb-4">
-                                <h4 class="widget-title">Search</h4>
-                                <input type="text" name="q" class="form-control" placeholder="Search products..." value="{{ request('q') }}">
-                            </div>
-
-                            <div class="sidebar-widget mb-4">
-                                <h4 class="widget-title">Brand</h4>
-                                <select name="brand" class="form-control select2">
-                                    <option value="">Select Brand</option>
-                                    @foreach($brands as $brand)
-                                        <option value="{{ $brand['id'] }}" {{ request('brand') == $brand['id'] ? 'selected' : '' }}>
-                                            {{ $brand['name'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="sidebar-widget mb-4">
-                                <h4 class="widget-title">Pattern</h4>
-                                <select name="pattern" class="form-control select2">
-                                    <option value="">Select Pattern</option>
-                                    @foreach($patterns as $pattern)
-                                        <option value="{{ $pattern['id'] }}" {{ request('pattern') == $pattern['id'] ? 'selected' : '' }}>
-                                            {{ $pattern['name'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="sidebar-widget mb-4">
-                                <h4 class="widget-title">OEM</h4>
-                                <select name="oem" class="form-control select2">
-                                    <option value="">Select OEM</option>
-                                    @foreach($oems as $oem)
-                                        <option value="{{ $oem['id'] }}" {{ request('oem') == $oem['id'] ? 'selected' : '' }}>
-                                            {{ $oem['name'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="sidebar-widget mb-4">
-                                <h4 class="widget-title">Specifications</h4>
-                                <div class="mb-3">
-                                    <input type="text" name="width" class="form-control" placeholder="Width" value="{{ request('width') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <input type="text" name="height" class="form-control" placeholder="Height" value="{{ request('height') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <input type="text" name="rim" class="form-control" placeholder="Rim" value="{{ request('rim') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <input type="text" name="runflat" class="form-control" placeholder="RunFlat" value="{{ request('runflat') }}">
-                                </div>
-                                <div class="mb-3">
-                                    <input type="text" name="load_speed" class="form-control" placeholder="Load/Speed" value="{{ request('load_speed') }}">
-                                </div>
-                            </div>
-
-                            <div class="sidebar-widget mb-4">
-                                <h4 class="widget-title">Origin</h4>
-                                <select name="origin" class="form-control select2">
-                                    <option value="">Select Origin</option>
-                                    @foreach($origins as $origin)
-                                        <option value="{{ $origin['id'] }}" {{ request('origin') == $origin['id'] ? 'selected' : '' }}>
-                                            {{ $origin['name'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="sidebar-widget mb-4">
-                                <h4 class="widget-title">Year</h4>
-                                <select name="year" class="form-control select2">
-                                    <option value="">Select Year</option>
-                                    @php
-                                        $currentYear = date('Y');
-                                        $startYear = 2000;
-                                    @endphp
-                                    @for($year = $currentYear; $year >= $startYear; $year--)
-                                        <option value="{{ $year }}" {{ request('year') == $year ? 'selected' : '' }}>
-                                            {{ $year }}
-                                        </option>
-                                    @endfor
-                                </select>
-                            </div>
-
-                            <div class="sidebar-widget mb-4">
-                                <button type="submit" class="btn btn-primary w-100 mb-2">Apply Filters</button>
-                                <a href="{{ url('/shop') }}" class="btn btn-secondary w-100">Reset Filters</a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
                 <!-- Main Content Area -->
-                <div class="col-md-9">
+                <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-12">
                             {!! $shop->detail !!}
@@ -141,24 +41,6 @@
                                         </div>
                                         <div class="text">
                                             <h3><a href="{{ url('product/'.$row->product_slug) }}">{{ $row->product_name }}</a></h3>
-                                            <div class="price">
-                                                @if($row->product_old_price != '')
-                                                <del>${{ $row->product_old_price }}</del>
-                                                @endif
-                                                ${{ $row->product_current_price }}
-                                            </div>
-                                            <div class="cart-button">
-                                                @if($row->product_stock == 0)
-                                                <a href="javascript:void(0);" class="stock-empty w-100-p text-center">{{ STOCK_EMPTY }}</a>
-                                                @else
-                                                <form action="{{ route('front.add_to_cart') }}" method="post">
-                                                    @csrf
-                                                    <input type="hidden" name="product_id" value="{{ $row->id }}">
-                                                    <input type="hidden" name="product_qty" value="1">
-                                                    <button type="submit">{{ ADD_TO_CART }}</button>
-                                                </form>
-                                                @endif
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
