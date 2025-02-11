@@ -298,25 +298,6 @@
         </li>
         @endif
 
-
-
-        <!-- Translation Section -->
-        @php if( in_array('Translation Section', $arr_one) || $logged_user_role_id==1 ): @endphp
-        <li class="nav-item {{ Request::is('admin/translation/front/*') ? 'active' : '' }}">
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTranslation" aria-expanded="true" aria-controls="collapseTranslation">
-                <i class="fas fa-user-secret"></i>
-                <span>Translation Section</span>
-            </a>
-            <div id="collapseTranslation" class="collapse {{ Request::is('admin/translation/front/*') ? 'show' : '' }}" aria-labelledby="headingPages" data-bs-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="{{ route('admin.translation.front') }}">Front End</a>
-                </div>
-            </div>
-        </li>
-        @endif
-
-
-
         <!-- Footer Columns -->
         @php if( in_array('Footer Columns', $arr_one) || $logged_user_role_id==1 ): @endphp
         <li class="nav-item {{ Request::is('admin/footer/*') ? 'active' : '' }}">
@@ -382,35 +363,6 @@
         </li>
         @endif
 
-        <?php /* ?>
-        <!-- Project -->
-        @php if( in_array('Project', $arr_one) || $logged_user_role_id==1 ): @endphp
-        <li class="nav-item {{ Request::is('admin/project/*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('admin.project.index') }}">
-                <i class="fas fa-umbrella"></i>
-                <span>Project</span>
-            </a>
-        </li>
-        @endif
-        
-
-        <!-- Career Section -->
-        @php if( in_array('Career Section', $arr_one) || $logged_user_role_id==1 ): @endphp
-        <li class="nav-item {{ Request::is('admin/job/*') ? 'active' : '' }}">
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseCareer" aria-expanded="true" aria-controls="collapseCareer">
-                <i class="fas fa-user-secret"></i>
-                <span>Career Section</span>
-            </a>
-            <div id="collapseCareer" class="collapse {{ Request::is('admin/job/*') ? 'show' : '' }}" aria-labelledby="headingPages" data-bs-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="{{ route('admin.job.index') }}">Jobs</a>
-                    <a class="collapse-item" href="{{ route('admin.job.view_application') }}">Job Applications</a>
-                </div>
-            </div>
-        </li>
-        @endif
-        <?php */ ?>
-
         <!-- Photo Gallery -->
         @php if( in_array('Photo Gallery', $arr_one) || $logged_user_role_id==1 ): @endphp
         <li class="nav-item {{ Request::is('admin/photo-gallery/*') ? 'active' : '' }}">
@@ -434,79 +386,9 @@
         <!-- Product Section -->
         @php if( in_array('Product Section', $arr_one) || $logged_user_role_id==1 ): @endphp
         <li class="nav-item {{ Request::is('admin/product/*')||Request::is('admin/shipping/*')||Request::is('admin/coupon/*') ? 'active' : '' }}">
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseProduct" aria-expanded="true" aria-controls="collapseProduct">
+            <a class="nav-link " href="{{ route('admin.product.index') }}">
                 <i class="fas fa-shopping-cart"></i>
-                <span>Product Section</span>
-            </a>
-            <div id="collapseProduct" class="collapse {{ Request::is('admin/product/*')||Request::is('admin/shipping/*')||Request::is('admin/coupon/*') ? 'show' : '' }}" aria-labelledby="headingPages" data-bs-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item" href="{{ route('admin.product.index') }}">Product</a>
-                    <a class="collapse-item" href="{{ route('admin.product.import.form') }}">Import Product</a>
-                    <a class="collapse-item" href="{{ route('admin.shipping.index') }}">Shipping</a>
-                    <a class="collapse-item" href="{{ route('admin.coupon.index') }}">coupon</a>
-                </div>
-            </div>
-        </li>
-        @endif
-
-        <!-- Order -->
-        @php if( in_array('Order Section', $arr_one) || $logged_user_role_id==1 ): @endphp
-        <li class="nav-item {{ Request::is('admin/order/*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('admin.order.index') }}">
-                <i class="fas fa-bookmark"></i>
-                <span>Order Section</span>
-            </a>
-        </li>
-        @endif
-
-        <!-- Customer -->
-        @php if( in_array('Customer Section', $arr_one) || $logged_user_role_id==1 ): @endphp
-        <li class="nav-item {{ Request::is('admin/customer/*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('admin.customer.index') }}">
-                <i class="fas fa-users"></i>
-                <span>Customer Section</span>
-            </a>
-        </li>
-        @endif
-
-        <!-- Why Choose Us -->
-        @php if( in_array('Why Choose Us', $arr_one) || $logged_user_role_id==1 ): @endphp
-        <li class="nav-item {{ Request::is('admin/why-choose/*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('admin.why_choose.index') }}">
-                <i class="fas fa-arrows-alt"></i>
-                <span>Why Choose Us</span>
-            </a>
-        </li>
-        @endif
-        
-        <?php /* ?>
-        <!-- Services -->
-        @php if( in_array('Service', $arr_one) || $logged_user_role_id==1 ): @endphp
-        <li class="nav-item {{ Request::is('admin/service/*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('admin.service.index') }}">
-                <i class="fas fa-certificate"></i>
-                <span>Service</span>
-            </a>
-        </li>
-        @endif
-        
-        <!-- Testimonials -->
-        @php if( in_array('Testimonial', $arr_one) || $logged_user_role_id==1 ): @endphp
-        <li class="nav-item {{ Request::is('admin/testimonial/*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('admin.testimonial.index') }}">
-                <i class="fas fa-award"></i>
-                <span>Testimonial</span>
-            </a>
-        </li>
-        @endif
-        <?php */ ?>
-        
-        <!-- Team Members -->
-        @php if( in_array('Team Member', $arr_one) || $logged_user_role_id==1 ): @endphp
-        <li class="nav-item {{ Request::is('admin/team-member/*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('admin.team_member.index') }}">
-                <i class="fas fa-user-plus"></i>
-                <span>Team Member</span>
+                <span>Products</span>
             </a>
         </li>
         @endif
@@ -517,16 +399,6 @@
             <a class="nav-link" href="{{ route('admin.faq.index') }}">
                 <i class="fas fa-question-circle"></i>
                 <span>FAQ</span>
-            </a>
-        </li>
-        @endif
-
-        <!-- Email Template -->
-        @php if( in_array('Email Template', $arr_one) || $logged_user_role_id==1 ): @endphp
-        <li class="nav-item {{ Request::is('admin/email-template/*') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('admin.email_template.index') }}">
-                <i class="fas fa-envelope"></i>
-                <span>Email Template</span>
             </a>
         </li>
         @endif

@@ -22,36 +22,11 @@
                     <div class="photo"><img src="{{ asset('uploads/'.$product_detail->product_featured_photo)  }}"></div>
                 </div>
                 <div class="col-md-7">
-                    <form action="{{ route('front.add_to_cart') }}" method="post">
-                        @csrf
-                        <h2>{{ $product_detail->product_name }}</h2>
-                        <p>
-                            <a href="javascript:void(0);" class="stock-available-amount">{{ STOCK_AVAILABLE }} {{ $product_detail->product_stock }}</a>
-                        </p>
-                        <p>
-                            {!! nl2br(e($product_detail->product_content_short)) !!}
-                        </p>
-
-                        <h2 class="mt_30">{{ PRODUCT_PRICE }}</h2>
-                        <div class="price">
-                            ${{ $product_detail->product_current_price }}
-                            @if($product_detail->product_old_price != '')
-                            <del>${{ $product_detail->product_old_price }}</del>
-                            @endif
-                        </div>
-
-                        <h2 class="mt_30">{{ QUANTITY }}</h2>
-                        <div class="qty">
-                            <input type="number" class="form-control" name="product_qty" step="1" min="1" max="" value="1" pattern="[0-9]*" inputmode="numeric">
-                        </div>
-                        <input type="hidden" name="product_id" value="{{ $product_detail->id }}">
-
-                        @if($product_detail->product_stock == 0)
-                        <a href="javascript:void(0);" class="stock-empty">{{ STOCK_EMPTY }}</a>
-                        @else
-                        <button type="submit" class="btn btn-primary mt_30">{{ ADD_TO_CART }}</button>
-                        @endif
-                    </form>
+                    @csrf
+                    <h2>{{ $product_detail->product_name }}</h2>
+                    <p>
+                        {!! nl2br(e($product_detail->product_content_short)) !!}
+                    </p>
                 </div>
             </div>
 
@@ -61,16 +36,10 @@
                         <li class="nav-item">
                             <a class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">{{ DESCRIPTION }}</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">{{ RETURN_POLICY }}</a>
-                        </li>
                     </ul>
                     <div class="tab-content" id="pills-tabContent">
                         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                             {!! $product_detail->product_content !!}
-                        </div>
-                        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                            {!! $product_detail->product_return_policy !!}
                         </div>
                     </div>
                 </div>
