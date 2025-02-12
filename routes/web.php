@@ -83,6 +83,9 @@ use App\Http\Controllers\Front\TeamMemberController as TeamMemberControllerForFr
 use App\Http\Controllers\Front\TermController;
 use App\Http\Controllers\Front\VideoGalleryController;
 
+/** New Extentions */
+use App\Http\Controllers\Front\QuoteController as QuoteControllerForFront;
+use App\Http\Controllers\Admin\QuoteController as QuoteControllerForAdmin;
 
 /* --------------------------------------- */
 /* Front End */
@@ -145,6 +148,9 @@ Route::post('customer/payment/paypal', [CheckoutController::class,'paypal'])->na
 Route::get('customer/paypal/success', [CheckoutController::class, 'paypal_success'])->name('customer.paypal.success');
 Route::get('customer/paypal/cancel', [CheckoutController::class, 'paypal_cancel'])->name('customer.paypal.cancel');
 Route::post('customer/checkout/login/store', [CheckoutController::class,'login'])->name('customer.login_from_checkout_page.store');
+
+Route::get('/quote', [QuoteControllerForFront::class, 'index'])->name('quote.index');
+Route::post('/quote', [QuoteControllerForFront::class, 'store'])->name('quote.store');
 
 Route::middleware(['customer:customer'])->group(function() {
     Route::get('customer/dashboard', [DashboardControllerForCustomer::class,'index'])->name('customer.dashboard');
@@ -639,6 +645,10 @@ Route::middleware(['admin:admin'])->group(function() {
     Route::get('admin/translation/front/edit', [TranslationController::class,'front_edit'])->name('admin.translation.front');
     Route::post('admin/translation/front/update', [TranslationController::class,'front_update']);
 
+    /* --------------------------------------- */
+    /* Quotes - Admin */
+    /* --------------------------------------- */
+    Route::get('/admin/quotes', [QuoteControllerForAdmin::class, 'index'])->name('admin.quotes.index');
 });
 
 

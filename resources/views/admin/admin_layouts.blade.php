@@ -393,6 +393,16 @@
         </li>
         @endif
 
+        <!-- Quote Section -->
+        @php if( in_array('Quote Section', $arr_one) || $logged_user_role_id==1 ): @endphp
+        <li class="nav-item {{ Request::is('admin/quote/*') ? 'active' : '' }}">
+            <a class="nav-link " href="{{ route('admin.quotes.index') }}">
+                <i class="fas fa-basketball-ball"></i>
+                <span>Quote</span>
+            </a>
+        </li>
+        @endif
+
         <!-- FAQ -->
         @php if( in_array('FAQ', $arr_one) || $logged_user_role_id==1 ): @endphp
         <li class="nav-item {{ Request::is('admin/faq/*') ? 'active' : '' }}">
