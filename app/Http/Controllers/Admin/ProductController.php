@@ -81,7 +81,11 @@ class ProductController extends Controller
                 'product_content_short' => 'required',
                 'product_featured_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
-            unlink(public_path('uploads/'.$product->product_featured_photo));
+            //check if file exists
+            if(file_exists(public_path('uploads/'.$product->product_featured_photo))) {
+                unlink(public_path('uploads/'.$product->product_featured_photo));
+            }
+            
             $ext = $request->file('product_featured_photo')->extension();
             $final_name = 'product-'.$id.'.'.$ext;
             $request->file('product_featured_photo')->move(public_path('uploads/'), $final_name);
