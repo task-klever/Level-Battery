@@ -116,7 +116,7 @@ $menu_arr = array();
 
                                 @foreach($dynamic_pages as $row)
                                     <li class="nav-item">
-                                        <a href="{{ url('page/'.$row->dynamic_page_slug) }}" class="nav-link">{{ $row->dynamic_page_name }}</a>
+                                        <a href="{{ url($row->dynamic_page_slug) }}" class="nav-link">{{ $row->dynamic_page_name }}</a>
                                     </li>
                                 @endforeach
 
