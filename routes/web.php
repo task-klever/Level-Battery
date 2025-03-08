@@ -651,11 +651,8 @@ Route::middleware(['admin:admin'])->group(function() {
     Route::get('/admin/quotes', [QuoteControllerForAdmin::class, 'index'])->name('admin.quotes.index');
 });
 
-
-
-
-
-
-
-
-
+/* ------------------------------------------------ */
+/* Dynamic pages management                         */
+/* (If all fail means it will be a dynamic page)    */
+/* ------------------------------------------------ */
+Route::get('/{slug}', [PageController::class, 'detail'])->where('slug', '.*');
